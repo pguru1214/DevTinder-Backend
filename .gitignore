@@ -1,0 +1,15 @@
+/node_modules
+/.pnp
+.pnp.js
+
+/coverage
+
+.env
+
+
+/build
+/dist
+
+
+
+npm_debug.log*
