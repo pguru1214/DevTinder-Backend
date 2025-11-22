@@ -1,7 +1,7 @@
 const express = require("express");
 const userAuth = require("../middlewares/auth");
 const ConnectionRequestModel = require("../models/ConnectionRequest");
-const UserModel = require("../models/User"); 
+const UserModel = require("../models/User");
 const mongoose = require("mongoose");
 
 const requestRouter = express.Router();
@@ -12,7 +12,8 @@ requestRouter.post(
   async (req, res) => {
     try {
       const fromUserId = req.user._id;
-      const { toUserId, status } = req.params;
+      const toUserId = req.params.toUserId;
+      const status = req.params.status;
 
       const allowedStatus = ["ignored", "interested"];
       if (!allowedStatus.includes(status)) {
@@ -20,6 +21,11 @@ requestRouter.post(
           message: "Invalid status type: " + status,
         });
       }
+
+      // const toUser = await User.findById(toUserId);
+      // if (!toUser) {
+      //   return res.status(404).json({ message: "User not found!" });
+      // }
 
       if (!mongoose.Types.ObjectId.isValid(toUserId)) {
         return res.status(400).json({ message: "Invalid toUserId" });
@@ -90,7 +96,9 @@ requestRouter.post(
       });
 
       if (!connectRequest) {
-        return res.status(404).json({ message: "Connection request not found" });
+        return res
+          .status(404)
+          .json({ message: "Connection request not found" });
       }
 
       connectRequest.status = status;
