@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     photoURL: {
       type: String,
-      default: "https://www.freepik.com/free-vector/blue-circle-with-white-user_145857007.htm#fromView=keyword&page=1&position=0&uuid=5c49416f-365e-4497-bdc2-51443d9a2391&query=Profile"
+      default: "https://randomuser.me/api/portraits/men/75.jpg"
     },
     about: {
       type: String,
