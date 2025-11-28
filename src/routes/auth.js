@@ -22,8 +22,16 @@ authRouter.post("/signup", async (req, res) => {
       password: passwordHash,
       skills,
     });
-    await user.save();
-    res.send("User Updated Successfully");
+    const savedUser = await user.save();
+    // const token = await savedUser.jwt.sign(
+    //   { _id: user._id },
+    //   "DEV@TINDER$990",
+    //   {
+    //     expiresIn: "9d",
+    //   }
+    // );
+    // res.cookie("token", token);
+    res.json({ message: "User signed up Successfully", data: savedUser });
   } catch (err) {
     res.status(400).send("Error Saving the user:" + err.message);
   }
@@ -39,10 +47,14 @@ authRouter.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
+      // const token = await user.getJWT();
+      // res.cookie("token", token, {
+      //   expires: new Date(Date.now() + 8 * 3600000),
+      // });
       const token = await jwt.sign({ _id: user._id }, "DEV@TINDER$990", {
         expiresIn: "9d",
       });
-     
+
       res.cookie("token", token);
       res.send(user);
     } else {
